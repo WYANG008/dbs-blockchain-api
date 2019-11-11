@@ -43,41 +43,71 @@ class DbsRouter {
             });
         }
     }
+    commonResult(output, res) {
+        if (output) {
+            res.status(200)
+                .send({
+                message: 'Success',
+                status: res.status,
+                result: output
+            });
+        }
+        else {
+            res.status(404)
+                .send({
+                message: 'no result',
+                status: res.status
+            });
+        }
+    }
     /**
      * Take each handler, and attach to one of the Express.Router's
      * endpoints.
      */
     init() {
         this.router.get('/', (req, res) => __awaiter(this, void 0, void 0, function* () {
-            res.send(yield this.dbsService.getAllMemberBanks());
+            this.commonResult((yield this.dbsService.getAllMemberBanks()), res);
+        }));
+        this.router.get('/getTxHash/:txHash', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            this.commonResult((yield this.dbsService.getTransaction(req.params.txHash)), res);
+        }));
+        this.router.get('/getBalance/:address', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            this.commonResult((yield this.dbsService.getBalance(req.params.address)), res);
         }));
         this.router.post('/register', (req, res) => __awaiter(this, void 0, void 0, function* () {
             var address = req.body.address;
             var name = req.body.name;
-            res.send(yield this.dbsService.registerMember(address, name));
+            // res.send();
+            this.commonResult((yield this.dbsService.registerMember(address, name)), res);
         }));
         this.router.post('/deRegister', (req, res) => __awaiter(this, void 0, void 0, function* () {
             var address = req.body.address;
             var name = req.body.name;
-            res.send(yield this.dbsService.deRegisterMember(address, name));
+            // res.send(await this.dbsService.deRegisterMember(address, name));
+            this.commonResult((yield this.dbsService.deRegisterMember(address, name)), res);
         }));
         this.router.post('/mint', (req, res) => __awaiter(this, void 0, void 0, function* () {
             var address = req.body.address;
             var amount = req.body.amount;
-            res.send(yield this.dbsService.mintNewCoin(address, amount));
+            // res.send(await this.dbsService.mintNewCoin(address, amount));
+            this.commonResult((yield this.dbsService.mintNewCoin(address, amount)), res);
         }));
         this.router.post('/burn', (req, res) => __awaiter(this, void 0, void 0, function* () {
             var address = req.body.address;
             var amount = req.body.amount;
-            res.send(yield this.dbsService.burnCoin(address, amount));
+            // res.send(await this.dbsService.burnCoin(address, amount));
+            this.commonResult((yield this.dbsService.burnCoin(address, amount)), res);
         }));
         this.router.post('/transfer', (req, res) => __awaiter(this, void 0, void 0, function* () {
-            var fromBankAddr = req.body.fromBankBlockchainAddress;
-            var toBankAddr = req.body.toBankBlockchainAddress;
+            var fromBankAddr = req.body.fromBankAddr;
+            var fromBankPrivKey = req.body.fromBankPrivKey;
+            var toBankAddr = req.body.toBankAddr;
             var fromCusId = req.body.fromBankCustomerId;
             var toCusId = req.body.toBankCustomerId;
             var amount = req.body.amount;
-            res.send(yield this.dbsService.transfer(fromBankAddr, toBankAddr, fromCusId, toCusId, amount));
+            console.log(fromBankAddr, toBankAddr, fromCusId, toCusId, amount);
+            // res.send(await this.dbsService.transfer(fromBankAddr, toBankAddr, fromCusId, toCusId, amount));
+            this.commonResult((yield this.dbsService.transfer(fromBankAddr, fromBankPrivKey, toBankAddr, fromCusId, toCusId, amount)), res);
         }));
     }
 }

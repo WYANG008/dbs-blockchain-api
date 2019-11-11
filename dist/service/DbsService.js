@@ -13,21 +13,28 @@ const dbs_coin_1 = require("dbs-coin");
 class DbsService {
     constructor() {
         this.dbsCoinWrapper = null;
+        // private bankCoinWrapper: DbsCoinWrapper = null;
         this.web3Wrapper = null;
+        // private bankWeb3Wrapper: Web3Wrapper = null;
+        this.provider = "";
         this.dbsPubKey = "";
         this.dbsPrivateKey = "";
+        this.smartcontractAddress = "";
         const infura = JSON.parse(fs.readFileSync('./src/keys/infura.json', "utf8"));
         const privateKeyFile = JSON.parse(fs.readFileSync('./src/keys/privateKey.json', 'utf8'));
         this.dbsPrivateKey = privateKeyFile.DBS.privateKey;
         this.dbsPubKey = privateKeyFile.DBS.publicKey;
-        const provider = "https://kovan.infura.io/v3/" + infura.token;
-        this.web3Wrapper = new dbs_coin_1.Web3Wrapper(provider, this.dbsPrivateKey);
-        const smartcontractAddress = dbs_coin_1.contractAddress.kovan.DBS.address;
-        this.dbsCoinWrapper = new dbs_coin_1.DbsCoinWrapper(this.web3Wrapper, smartcontractAddress);
+        this.provider = "https://kovan.infura.io/v3/" + infura.token;
+        this.web3Wrapper = new dbs_coin_1.Web3Wrapper(this.provider, this.dbsPrivateKey);
+        this.smartcontractAddress = dbs_coin_1.contractAddress.kovan.DBS.address;
+        this.dbsCoinWrapper = new dbs_coin_1.DbsCoinWrapper(this.web3Wrapper, this.smartcontractAddress);
     }
-    transfer(fromBankBlockchainAddress, toBankBlockchainAddress, fromBankCustomerId, toBankCustomerId, amount, option = { gasLimit: 2000000 }) {
+    transfer(fromBankPubKey, fromBankPrivKey, toBankAddress, fromBankCustomerId, toBankCustomerId, amount, option = { gasLimit: 2000000 }) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.dbsCoinWrapper.transfer(fromBankBlockchainAddress, toBankBlockchainAddress, fromBankCustomerId, toBankCustomerId, amount, option);
+            console.log(fromBankPubKey, fromBankPrivKey, toBankAddress, fromBankCustomerId, toBankCustomerId, amount);
+            const bankWeb3Wrapper = new dbs_coin_1.Web3Wrapper(this.provider, fromBankPrivKey);
+            this.dbsCoinWrapper = new dbs_coin_1.DbsCoinWrapper(bankWeb3Wrapper, this.smartcontractAddress);
+            return this.dbsCoinWrapper.transfer(fromBankPubKey, toBankAddress, fromBankCustomerId, toBankCustomerId, amount, option);
         });
     }
     mintNewCoin(toBankBlockchainAddress, amount, option = { gasLimit: 2000000 }) {
@@ -57,6 +64,18 @@ class DbsService {
                 address: result.blockchainAddress,
                 name: result.bankName
             }));
+        });
+    }
+    getTransaction(txHash) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const results = yield this.web3Wrapper.getTransactionReceipt(txHash);
+            return results;
+        });
+    }
+    getBalance(address) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const results = yield this.web3Wrapper.getErc20Balance(this.smartcontractAddress, address);
+            return results;
         });
     }
 }
