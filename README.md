@@ -16,5 +16,6 @@
 - [Simple whois REST API](https://github.com/wingsuitist/whoissv)
 
 ## Reference
+- https://github.com/kabl/typescript-node-express.git
 
-Check out the [blog post](http://mherman.org/blog/2016/11/05/developing-a-restful-api-with-node-and-typescript/#.WB3zyeErJE4).
+- Check out the [blog post](http://mherman.org/blog/2016/11/05/developing-a-restful-api-with-node-and-typescript/#.WB3zyeErJE4).
