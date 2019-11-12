@@ -3,6 +3,7 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 // import {cors} from "cors";
+var cors = require('cors')
 
 import DbsRouter from './routes/DbsRouter';
 
@@ -45,7 +46,7 @@ class App {
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     });
-    // this.express.use(cors())
+    this.express.use(cors());
   }
 
 }
