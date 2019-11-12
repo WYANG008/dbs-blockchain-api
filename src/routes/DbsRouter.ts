@@ -44,7 +44,6 @@ export class DbsRouter {
     if (output) {
       // res.h
       res.status(200)
-        .header("Access-Control-Allow-Origin", "*")
         .send({
           message: 'Success',
           status: res.status,
