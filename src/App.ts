@@ -7,7 +7,7 @@ var cors = require('cors');
 
 var corsOptions = {
   origin: function (origin, callback) {
-    if (["3.0.57.50", "dbscoin-deo.nusiss.net"].indexOf(origin) !== -1) {
+    if (["3.0.57.50", "http://dbscoin-demo.nusiss.net"].indexOf(origin) !== -1) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS'))

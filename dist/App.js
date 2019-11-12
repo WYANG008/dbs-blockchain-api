@@ -5,6 +5,16 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 // import {cors} from "cors";
 var cors = require('cors');
+var corsOptions = {
+    origin: function (origin, callback) {
+        if (["3.0.57.50", "dbscoin-deo.nusiss.net"].indexOf(origin) !== -1) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+};
 const DbsRouter_1 = require("./routes/DbsRouter");
 // Creates and configures an ExpressJS web server.
 class App {
@@ -23,7 +33,7 @@ class App {
             res.header("Access-Control-Allow-Origin", "*");
             next();
         });
-        this.express.use(cors());
+        this.express.use(cors(corsOptions));
     }
     // Configure API endpoints.
     routes() {
