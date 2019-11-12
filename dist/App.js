@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
+// import {cors} from "cors";
 const DbsRouter_1 = require("./routes/DbsRouter");
 // Creates and configures an ExpressJS web server.
 class App {
@@ -32,6 +33,12 @@ class App {
         });
         // this.express.use('/', router);
         this.express.use('/api/dbs/', DbsRouter_1.default);
+        this.express.use(function (req, res, next) {
+            res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // update to match the domain you will make the request from
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+        });
+        // this.express.use(cors())
     }
 }
 exports.default = new App().express;
