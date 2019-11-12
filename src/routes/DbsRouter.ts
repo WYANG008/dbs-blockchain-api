@@ -42,7 +42,9 @@ export class DbsRouter {
 
   public commonResult(output: any, res: Response) {
     if (output) {
+      // res.h
       res.status(200)
+        .header("Access-Control-Allow-Origin", "*")
         .send({
           message: 'Success',
           status: res.status,
