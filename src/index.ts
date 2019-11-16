@@ -1,5 +1,6 @@
 import * as http from 'http';
 import * as debug from 'debug';
+// const cors = require("cors");
 
 import App from './App';
 

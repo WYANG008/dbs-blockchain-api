@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 // import {cors} from "cors";
-// var cors = require('cors');
+var cors = require('cors');
 
 // var corsOptions = {
 //   origin: function (origin, callback) {
@@ -36,11 +36,13 @@ class App {
     this.express.use(logger('dev'));
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
-    // this.express.use(function(req, res, next) {
-    //   res.header("Access-Control-Allow-Origin", "*")
-    //   next();
-    // });
-    // this.express.use(cors(corsOptions));
+    this.express.use(function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+      next();
+    });
+    this.express.use(cors());
+    this.express.options('*', cors());
   }
 
   // Configure API endpoints.
