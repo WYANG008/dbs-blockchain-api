@@ -2,8 +2,8 @@ import * as path from 'path';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
-// import {cors} from "cors";
-var cors = require('cors');
+import {cors} from "cors";
+// var cors = require('cors');
 
 // var corsOptions = {
 //   origin: function (origin, callback) {
@@ -38,11 +38,17 @@ class App {
     this.express.use(bodyParser.urlencoded({ extended: false }));
     this.express.use(function(req, res, next) {
       res.header("Access-Control-Allow-Origin", "*");
-      res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+      res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS, PATCH, HEAD');
+      res.set('Access-Control-Allow-Headers', 'Content-Type')
       next();
     });
     this.express.use(cors());
-    this.express.options('*', cors());
+    this.express.options('*', cors({
+      exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar']
+
+    }
+      
+    ));
   }
 
   // Configure API endpoints.
