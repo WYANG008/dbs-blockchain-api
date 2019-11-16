@@ -2,8 +2,8 @@ import * as path from 'path';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
-import {cors} from "cors";
-// var cors = require('cors');
+// import {cors} from "cors";
+var cors = require('cors');
 
 // var corsOptions = {
 //   origin: function (origin, callback) {
