@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const http = require("http");
 const debug = require("debug");
+// const cors = require("cors");
 const App_1 = require("./App");
 debug('ts-express:server');
 const port = normalizePort(process.env.PORT || 3000);

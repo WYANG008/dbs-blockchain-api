@@ -4,7 +4,7 @@ const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 // import {cors} from "cors";
-// var cors = require('cors');
+var cors = require('cors');
 // var corsOptions = {
 //   origin: function (origin, callback) {
 //     if (["3.0.57.50", "http://dbscoin-demo.nusiss.net"].indexOf(origin) !== -1) {
@@ -28,11 +28,16 @@ class App {
         this.express.use(logger('dev'));
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: false }));
-        // this.express.use(function(req, res, next) {
-        //   res.header("Access-Control-Allow-Origin", "*")
-        //   next();
-        // });
-        // this.express.use(cors(corsOptions));
+        this.express.use(function (req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS, PATCH, HEAD');
+            res.set('Access-Control-Allow-Headers', 'Content-Type');
+            next();
+        });
+        this.express.use(cors());
+        this.express.options('*', cors({
+            exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar']
+        }));
     }
     // Configure API endpoints.
     routes() {
