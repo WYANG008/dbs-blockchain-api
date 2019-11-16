@@ -34,7 +34,12 @@ class App {
             res.set('Access-Control-Allow-Headers', 'Content-Type');
             next();
         });
-        this.express.use(cors());
+        this.express.use(cors({
+            origin: (origin, callback) => {
+                return callback(null, true);
+            },
+            credentials: false
+        }));
         this.express.options('*', cors({
             exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar']
         }));
