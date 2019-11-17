@@ -5,16 +5,6 @@ import * as bodyParser from 'body-parser';
 // import {cors} from "cors";
 var cors = require('cors');
 
-// var corsOptions = {
-//   origin: function (origin, callback) {
-//     if (["3.0.57.50", "http://dbscoin-demo.nusiss.net"].indexOf(origin) !== -1) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   }
-// }
-
 
 import DbsRouter from './routes/DbsRouter';
 

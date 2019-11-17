@@ -66,37 +66,120 @@ export class DbsRouter {
    */
   init() {
     this.router.get('/', async (req, res) => {
-      this.commonResult((await this.dbsService.getAllMemberBanks()), res)
+      let output = null;
+      try {
+        output = await this.dbsService.getAllMemberBanks()
+        this.commonResult(output, res)
+      }catch(err){
+        res.status(404)
+        .send({
+          message: JSON.stringify(err),
+          status: res.status
+        });
+      }
+     
     });
     this.router.get('/getTxHash/:txHash', async (req, res) => {
-      this.commonResult((await this.dbsService.getTransaction(req.params.txHash)), res)
+      // this.commonResult(, res);
+
+      let output = null;
+      try {
+        output = (await this.dbsService.getTransaction(req.params.txHash))
+        this.commonResult(output, res)
+      }catch(err){
+        res.status(404)
+        .send({
+          message: JSON.stringify(err),
+          status: res.status
+        });
+      }
     });
     this.router.get('/getBalance/:address', async (req, res) => {
-      this.commonResult((await this.dbsService.getBalance(req.params.address)), res)
+      // this.commonResult(, res)
+
+      let output = null;
+      try {
+        output = (await this.dbsService.getBalance(req.params.address))
+        this.commonResult(output, res)
+      }catch(err){
+        res.status(404)
+        .send({
+          message: JSON.stringify(err),
+          status: res.status
+        });
+      }
     });
     this.router.post('/register', async (req, res) => {
       var address = req.body.address;
       var name = req.body.name;
       // res.send();
-      this.commonResult((await this.dbsService.registerMember(address, name)), res)
+      // this.commonResult(, res)
+
+      let output = null;
+      try {
+        output = (await this.dbsService.registerMember(address, name))
+        this.commonResult(output, res)
+      }catch(err){
+        res.status(404)
+        .send({
+          message: JSON.stringify(err),
+          status: res.status
+        });
+      }
     });
     this.router.post('/deRegister', async (req, res) => {
       var address = req.body.address;
       var name = req.body.name;
       // res.send(await this.dbsService.deRegisterMember(address, name));
-      this.commonResult((await this.dbsService.deRegisterMember(address, name)), res)
+      // this.commonResult(, res)
+
+      let output = null;
+      try {
+        output = (await this.dbsService.deRegisterMember(address, name))
+        this.commonResult(output, res)
+      }catch(err){
+        res.status(404)
+        .send({
+          message: JSON.stringify(err),
+          status: res.status
+        });
+      }
     });
     this.router.post('/mint', async (req, res) => {
       var address = req.body.address;
       var amount = req.body.amount;
       // res.send(await this.dbsService.mintNewCoin(address, amount));
-      this.commonResult((await this.dbsService.mintNewCoin(address, amount)), res)
+      // this.commonResult(, res)
+
+      let output = null;
+      try {
+        output = (await this.dbsService.mintNewCoin(address, amount))
+        this.commonResult(output, res)
+      }catch(err){
+        res.status(404)
+        .send({
+          message: JSON.stringify(err),
+          status: res.status
+        });
+      }
     });
     this.router.post('/burn', async (req, res) => {
       var address = req.body.address;
       var amount = req.body.amount;
       // res.send(await this.dbsService.burnCoin(address, amount));
-      this.commonResult((await this.dbsService.burnCoin(address, amount)), res)
+      // this.commonResult(, res)
+
+      let output = null;
+      try {
+        output =(await this.dbsService.burnCoin(address, amount))
+        this.commonResult(output, res)
+      }catch(err){
+        res.status(404)
+        .send({
+          message: JSON.stringify(err),
+          status: res.status
+        });
+      }
     });
     this.router.post('/transfer', async (req, res) => {
       var fromBankAddr = req.body.fromBankAddr;
@@ -107,15 +190,36 @@ export class DbsRouter {
       var amount = req.body.amount;
       console.log(fromBankAddr, toBankAddr, fromCusId, toCusId, amount);
       // res.send(await this.dbsService.transfer(fromBankAddr, toBankAddr, fromCusId, toCusId, amount));
-      this.commonResult((await this.dbsService.transfer(
-        fromBankAddr,
-        fromBankPrivKey,
-        toBankAddr,
-        fromCusId,
-        toCusId,
-        amount
+      // this.commonResult((await this.dbsService.transfer(
+      //   fromBankAddr,
+      //   fromBankPrivKey,
+      //   toBankAddr,
+      //   fromCusId,
+      //   toCusId,
+      //   amount
 
-      )), res)
+      // )), res)
+
+
+      let output = null;
+      try {
+        output =(await this.dbsService.transfer(
+          fromBankAddr,
+          fromBankPrivKey,
+          toBankAddr,
+          fromCusId,
+          toCusId,
+          amount
+  
+        ))
+        this.commonResult(output, res)
+      }catch(err){
+        res.status(404)
+        .send({
+          message: JSON.stringify(err),
+          status: res.status
+        });
+      }
     });
   }
 
